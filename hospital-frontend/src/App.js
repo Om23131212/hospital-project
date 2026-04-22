@@ -19,43 +19,76 @@ function App() {
 
   const token = localStorage.getItem("token");
 
+  // 🔥 Fetch Patients
   const fetchPatients = async () => {
-    const res = await axios.get(`${BASE_URL}/api/patients`);
-    setPatients(res.data);
+    try {
+      const res = await axios.get(`${BASE_URL}/api/patients`);
+      setPatients(res.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
     if (token) fetchPatients();
   }, [token]);
 
+  // 🔥 Input Change
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // 🔥 Add Patient
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post(`${BASE_URL}/api/patients`, form);
-    fetchPatients();
+    try {
+      await axios.post(`${BASE_URL}/api/patients`, form);
+      fetchPatients();
+
+      setForm({
+        fullName: "",
+        email: "",
+        phone: "",
+        age: "",
+        gender: "",
+        disease: "",
+        doctorAssigned: ""
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
+  // 🔥 Delete
   const deletePatient = async (id) => {
-    await axios.delete(`${BASE_URL}/api/patients/${id}`);
-    fetchPatients();
+    try {
+      await axios.delete(`${BASE_URL}/api/patients/${id}`);
+      fetchPatients();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
+  // 🔥 Toggle Cured
   const toggleCured = async (id, current) => {
-    await axios.put(`${BASE_URL}/api/patients/${id}`, {
-      cured: !current
-    });
-    fetchPatients();
+    try {
+      await axios.put(`${BASE_URL}/api/patients/${id}`, {
+        cured: !current
+      });
+      fetchPatients();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
+  // 🔒 Login Check
   if (!token) return <Login />;
 
   return (
     <div className="container">
       <h1>🏥 Hospital Management System</h1>
 
+      {/* Logout */}
       <button
         className="logout-btn"
         onClick={() => {
@@ -66,20 +99,26 @@ function App() {
         Logout
       </button>
 
+      <hr />
+
       {/* FORM */}
       <div className="form-card">
         <form onSubmit={handleSubmit}>
-          <input name="fullName" placeholder="Name" onChange={handleChange} />
-          <input name="email" placeholder="Email" onChange={handleChange} />
-          <input name="phone" placeholder="Phone" onChange={handleChange} />
-          <input name="age" placeholder="Age" onChange={handleChange} />
-          <input name="gender" placeholder="Gender" onChange={handleChange} />
-          <input name="disease" placeholder="Disease" onChange={handleChange} />
-          <input name="doctorAssigned" placeholder="Doctor" onChange={handleChange} />
+          <input name="fullName" value={form.fullName} placeholder="Name" onChange={handleChange} />
+          <input name="email" value={form.email} placeholder="Email" onChange={handleChange} />
+          <input name="phone" value={form.phone} placeholder="Phone" onChange={handleChange} />
+          <input name="age" value={form.age} placeholder="Age" onChange={handleChange} />
+          <input name="gender" value={form.gender} placeholder="Gender" onChange={handleChange} />
+          <input name="disease" value={form.disease} placeholder="Disease" onChange={handleChange} />
+          <input name="doctorAssigned" value={form.doctorAssigned} placeholder="Doctor" onChange={handleChange} />
 
-          <button className="add-btn">Add Patient</button>
+          <button type="submit" className="add-btn">
+            Add Patient
+          </button>
         </form>
       </div>
+
+      <hr />
 
       {/* PATIENT LIST */}
       {patients.map((p) => (
@@ -87,6 +126,7 @@ function App() {
           <h3>{p.fullName}</h3>
           <p>{p.disease}</p>
 
+          {/* ✅ FINAL cured text */}
           <p className={p.cured ? "cured" : "not-cured"}>
             {p.cured ? "✅ Cured" : "❌ Not Cured"}
           </p>
@@ -96,8 +136,9 @@ function App() {
             checked={p.cured}
             onChange={() => toggleCured(p._id, p.cured)}
           />
+          Mark as cured
 
-          <br />
+          <br /><br />
 
           <button
             className="delete-btn"
