@@ -26,12 +26,8 @@ function App() {
   };
 
   const fetchPatients = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/api/patients`, config);
-      setPatients(res.data);
-    } catch (err) {
-      console.log(err);
-    }
+    const res = await axios.get(`${BASE_URL}/api/patients`, config);
+    setPatients(res.data);
   };
 
   useEffect(() => {
@@ -44,7 +40,6 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     await axios.post(`${BASE_URL}/api/patients`, form, config);
     fetchPatients();
   };
@@ -57,28 +52,44 @@ function App() {
   if (!token) return <Login />;
 
   return (
-    <div style={{ textAlign: "center" }}>
-      <h1>🏥 Hospital System</h1>
+    <div className="container">
+      <div className="card">
+        <h1>🏥 Hospital Management System</h1>
 
-      <button onClick={() => {
-        localStorage.removeItem("token");
-        window.location.reload();
-      }}>
-        Logout
-      </button>
+        <button onClick={() => {
+          localStorage.removeItem("token");
+          window.location.reload();
+        }}>
+          Logout
+        </button>
 
-      <form onSubmit={handleSubmit}>
-        <input name="fullName" placeholder="Name" onChange={handleChange} />
-        <input name="email" placeholder="Email" onChange={handleChange} />
-        <button>Add</button>
-      </form>
+        <hr />
 
-      {patients.map(p => (
-        <div key={p._id}>
-          {p.fullName}
-          <button onClick={() => deletePatient(p._id)}>Delete</button>
-        </div>
-      ))}
+        {/* FULL FORM */}
+        <form onSubmit={handleSubmit}>
+          <input name="fullName" placeholder="Name" onChange={handleChange} />
+          <input name="email" placeholder="Email" onChange={handleChange} />
+          <input name="phone" placeholder="Phone" onChange={handleChange} />
+          <input name="age" placeholder="Age" onChange={handleChange} />
+          <input name="gender" placeholder="Gender" onChange={handleChange} />
+          <input name="disease" placeholder="Disease" onChange={handleChange} />
+          <input name="doctorAssigned" placeholder="Doctor" onChange={handleChange} />
+
+          <button type="submit">Add Patient</button>
+        </form>
+
+        <hr />
+
+        {/* LIST */}
+        {patients.map((p) => (
+          <div key={p._id} className="patient-card">
+            <h3>{p.fullName}</h3>
+            <p>{p.disease}</p>
+
+            <button onClick={() => deletePatient(p._id)}>Delete</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
