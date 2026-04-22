@@ -1,23 +1,40 @@
-const express = require("express");
+import express from "express";
+import User from "../models/User.js";
+import jwt from "jsonwebtoken";
+
 const router = express.Router();
-const jwt = require("jsonwebtoken");
 
-// 🔥 LOGIN ROUTE
-router.post("/login", (req, res) => {
-  const { email, password } = req.body;
+// 🔥 REGISTER
+router.post("/register", async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  // demo login (simple)
-  if (email === "admin@gmail.com" && password === "1234") {
-    const token = jwt.sign(
-      { email },
-      process.env.JWT_SECRET || "secret123",
-      { expiresIn: "1h" }
-    );
+    const user = new User({ email, password });
+    await user.save();
 
-    return res.json({ token });
+    res.json({ message: "User registered" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-
-  res.status(401).json({ message: "Invalid credentials" });
 });
 
-module.exports = router;
+// 🔥 LOGIN
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email, password });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign({ id: user._id }, "secret123");
+
+    res.json({ token });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+export default router;
