@@ -1,0 +1,142 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.container {
+  text-align: center;
+  padding: 20px;
+  color: white;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.form {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  margin: auto;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.form input {
+  width: 90%;
+  padding: 12px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+.form input:focus {
+  box-shadow: 0 0 5px #fff;
+}
+
+.form button {
+  margin-top: 10px;
+  padding: 12px 25px;
+  background: linear-gradient(45deg, #ff7e5f, #feb47b);
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.form button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(45deg, #ff6a00, #ee0979);
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.card {
+  background: white;
+  color: black;
+  width: 220px;
+  margin: 10px;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h3 {
+  margin: 0;
+  color: #333;
+}
+
+.card p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.card button {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.card button:hover {
+  background: darkred;
+}
+.card label {
+  display: block;
+  margin-top: 8px;
+}
+
+.card input {
+  margin-right: 5px;
+}
+/* STATUS COLORS */
+.status {
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.green {
+  color: #00ff88;
+}
+
+.red {
+  color: #ff4d4d;
+}
+
+/* DELETE BUTTON */
+.delete-btn {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: linear-gradient(45deg, #ff416c, #ff4b2b);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.delete-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(45deg, #ff1e56, #ff0000);
+}
