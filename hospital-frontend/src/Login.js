@@ -1,21 +1,22 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function Login({ setIsLoggedIn }) {
+const BASE_URL = "https://hospital-backend-ixtq.onrender.com";
+
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post(
-        "https://hospital-backend-ixtq.onrender.com/api/auth/login",
-        { email, password }
-      );
+      const res = await axios.post(`${BASE_URL}/api/auth/login`, {
+        email,
+        password
+      });
 
-      // 🔥 save token
       localStorage.setItem("token", res.data.token);
+      window.location.reload();
 
-      setIsLoggedIn(true);
     } catch (err) {
       alert("Login failed");
     }
@@ -25,17 +26,10 @@ function Login({ setIsLoggedIn }) {
     <div style={{ textAlign: "center", marginTop: "100px" }}>
       <h2>Login</h2>
 
-      <input
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
+      <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
       <br /><br />
 
-      <input
-        placeholder="Password"
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
       <br /><br />
 
       <button onClick={handleLogin}>Login</button>
